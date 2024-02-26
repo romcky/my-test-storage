@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>Add Role</h1>
+    <form method="post" action="/roles/add">
+        <label>Role:</label><br>
+        <input type="text" name="role"/><br>
+        <input type="hidden" th:attr="name=${_csrf.parameterName}, value=${_csrf.token}"/>
+        <button type="submit">Add</button>
+    </form>
+</body>
+</html>

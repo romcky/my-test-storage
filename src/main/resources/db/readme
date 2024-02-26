@@ -1,0 +1,17 @@
+Copy base to home directory (or another path
+as in application.properties)This base exist:
+
+login: admin
+password: admin
+role: ADMIN
+
+login: manager
+password: manager
+role: MANAGER
+
+login: user
+password: user
+role: USER
+
+
+

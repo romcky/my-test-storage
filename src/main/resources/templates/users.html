@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Управление пользователями</title>
+</head>
+<body>
+
+<h2>Список пользователей:</h2>
+<table border="1">
+    <tr>
+        <th>ID:</th>
+        <th>Логин:</th>
+        <th>Права:</th>
+        <th></th>
+    </tr>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.id}">1</td>
+        <td th:text="${user.name}">user</td>
+        <td th:each="role : ${user.roles}">
+            <div th:text="${role.name} + ' '"></div>
+        </td>
+        <td>
+            <form method="post" th:action="'/users/delete/' + ${user.id}">
+            <button type="submit">delete</button>
+            </form>
+        </td>
+    </tr>
+</table>
+
+<h2>Добавить пользователя:</h2>
+<form method="post" action="/users/add">
+    <label for="id-name">Логин:</label><br>
+    <input type="text" id="id-name" name="name"/><br>
+    <label for "id-pwd">Пароль:</label><br>
+    <input type="text" id="id-pwd" name="pwd"/><br>
+    <label for "id-role">Права:</label><br>
+    <input type="text" id="id-role" name="role"/><br>
+    <input type="hidden" th:attr="name=${_csrf.parameterName}, value=${_csrf.token}"/>
+    <button type="submit" th:text="Добавить">Добавить</button>
+</form>
+
+</body>
+

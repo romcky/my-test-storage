@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Roles List</h1>
+<table border="1">
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th></th>
+    </tr>
+    <tr th:each="role : ${roles}">
+        <td th:text="${role.id}">1</td>
+        <td th:text="${role.name}">ADMIN</td>
+        <td>
+            <form method="post" th:action="'/roles/delete/' + ${role.id}">
+            <button type="submit">delete</button>
+            </form>
+        </td>
+    </tr>
+</table>
+</body>
+
+
