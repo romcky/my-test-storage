@@ -49,6 +49,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(managerRegistry -> managerRegistry
                         .requestMatchers("/admin").hasAuthority("ADMIN")
                         .requestMatchers("/users/**").hasAnyAuthority("ADMIN")
+                        .requestMatchers("/files").authenticated()
+                        .requestMatchers("/files/get/*").authenticated()
+                        .requestMatchers("/files/add").hasAuthority("MANAGER")
                         .requestMatchers("/manager").hasAuthority("MANAGER")
                         .requestMatchers("/").permitAll()
                         .anyRequest().authenticated())

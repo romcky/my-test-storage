@@ -12,11 +12,37 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import java.nio.file.Path;
+import java.nio.file.Files;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 
 @Controller
 public class TestController {
     @Autowired
     StorageRoleService storageRoleService;
+
+    @GetMapping("/files")
+    public String getFiles(Model model) {
+        return "files";
+    }
+
+    @PostMapping("/files/add")
+    public String addFile(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) 
+            throws Exception {
+        file.transferTo(Path.of("/home/anton", file.getOriginalFilename()));
+        redirectAttributes.addFlashAttribute("message", "file uploaded");
+        return "redirect:/files";
+    }
+
+    @GetMapping("/files/get/{id}")
+    public ResponseEntity<byte[]> getFile(@PathVariable Long id) throws Exception {
+        return ResponseEntity.ok()
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"asdf-start.txt\"")
+            .body(Files.readAllBytes(Path.of("/home/anton/.asdf-start")));
+    }
 
     @GetMapping("/public")
     public String testPublic(Model model) {
