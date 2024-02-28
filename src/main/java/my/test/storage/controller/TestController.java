@@ -1,10 +1,14 @@
 package my.test.storage.controller;
 
+import my.test.storage.entity.StorageFile;
 import my.test.storage.repository.StorageRoleRepository;
 import my.test.storage.repository.StorageUserRepository;
+import my.test.storage.service.StorageFileService;
 import my.test.storage.service.StorageRoleService;
 import my.test.storage.service.StorageUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +20,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.nio.file.Path;
 import java.nio.file.Files;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 
@@ -23,31 +30,16 @@ import org.springframework.http.ResponseEntity;
 public class TestController {
     @Autowired
     StorageRoleService storageRoleService;
+    @Autowired
+    StorageFileService storageFileService;
 
-    @GetMapping("/files")
-    public String getFiles(Model model) {
-        return "files";
-    }
 
-    @PostMapping("/files/add")
-    public String addFile(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) 
-            throws Exception {
-        file.transferTo(Path.of("/home/anton", file.getOriginalFilename()));
-        redirectAttributes.addFlashAttribute("message", "file uploaded");
-        return "redirect:/files";
-    }
-
-    @GetMapping("/files/get/{id}")
-    public ResponseEntity<byte[]> getFile(@PathVariable Long id) throws Exception {
-        return ResponseEntity.ok()
-            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"asdf-start.txt\"")
-            .body(Files.readAllBytes(Path.of("/home/anton/.asdf-start")));
-    }
 
     @GetMapping("/public")
     public String testPublic(Model model) {
         return "public";
     }
+
 
     @GetMapping("/private")
     public String testPrivate(Model model) {
@@ -59,7 +51,6 @@ public class TestController {
     @GetMapping("/")
     public String testMain(Model model) {
         model.addAttribute("username", SecurityContextHolder.getContext().getAuthentication().getName());
-        model.addAttribute("auths", SecurityContextHolder.getContext().getAuthentication().getAuthorities());
         return "main";
     }
 

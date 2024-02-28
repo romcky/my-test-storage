@@ -1,3 +1,38 @@
-table, td {
-    border: 1px solid black;
+
+body {
+    padding: 10px 50px 10px 50px;
+}
+
+.menu-button {
+    background: none;
+    border: none;
+    padding: 0;
+    color: #808080;
+    font-weight: bold;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.menu-button:hover {
+    color: #202020;
+}
+
+table {
+    width: 100%;
+}
+
+.header {
+    background-color: #808080;
+}
+
+.small-column {
+    width: 50px
+}
+
+.odd-raw {
+    background-color: #D3D3D3;
+}
+
+.even-raw {
+    background-color: #B9B9B9;
 }

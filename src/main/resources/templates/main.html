@@ -2,15 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Хранилище файлов</title>
+    <link rel="stylesheet" th:href="@{styles/stylesheet.css}">
+
+    </style>
+
 </head>
 <body>
-    <h1>Хранилище файлов</h1>
-    <h2 th:text="${username}"></h2>
-    <h2 th:text="${auths}"></h2>
 
-    <a href="/users">Пользователи</a>
-    <a href="/files">Файлы</a>
-    <a href="/logout">Уйти</a>
+    <div th:if="${username != 'anonymousUser'}">
+        <h2 th:text="${'Привет, ' + username + '!'}"></h2>
+        <ul>
+            <li><form method="GET" th:action="@{/files}"><button class="menu-button" type="submit">Файлы</button></form></li>
+            <li><form method="GET" th:action="@{/users}"><button class="menu-button" type="submit">Пользователи</button></form></li>
+            <li><form method="POST" th:action="@{/logout}"><button class="menu-button" type="submit">Уйти</button></form></li>
+        </ul>
+    </div>
+
+    <div th:if="${username == 'anonymousUser'}">
+        <h2>Войдите в сервис:</h2>
+        <form method="POST" th:action="@{/}">
+            <input type="text" name="username" placeholder="Логин"/><br>
+            <input type="password" name="password" placeholder="Пароль"/><br>
+            <button type="submit">Войти</button>
+        </form>
+    </div>
+
 </body>
 </html>

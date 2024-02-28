@@ -3,15 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <title>Управление файлами</title>
+    <link rel="stylesheet" th:href="@{styles/stylesheet.css}">
 </head>
 <body>
-<h2>Добавить файл</h2>
-<form method="POST" enctype="multipart/form-data" action="/files/add">
-    <label>Файл:</label><br>
-    <input type="file" name="file"/><br>
-    <input type="hidden" th:attr="name=${_csrf.parameterName}, value=${_csrf.token}"/>
-    <button type="submit" th:text="Добавить">Добавить</button>
-</form>
+<table>
+    <tr class="header">
+        <th class="small-column">ID</th>
+        <th>Файл</th>
+        <th>Комментарий</th>
+        <th>Добавлен</th>
+        <th class="small-column"></th>
+        <th class="small-column" th:if="${manager}"></th>
+    </tr>
+    <tr th:each="file : ${files}" th:class="${fileStat.odd} ? 'odd-raw' : 'even-raw'">
+        <td th:text="${file.id}">1</td>
+        <td th:text="${file.name}">user</td>
+        <td th:text="${file.info}">info</td>
+        <td th:text="${file.createdMediumString}">created</td>
+        <td>
+            <form method="GET" th:action="'/files/get/' + ${file.id}">
+                <button type="submit">Скачать</button>
+            </form>
+        </td>
+        <td th:if="${manager}">
+            <form method="POST" th:action="'/files/delete/' + ${file.id}">
+                <button type="submit">Удалить</button>
+            </form>
+        </td>
+    </tr>
+</table>
+
+<div th:if="${manager}">
+    <h2>Добавить файл</h2>
+    <form method="POST" enctype="multipart/form-data" action="/files/add">
+        <table>
+            <tr><input type="file" name="file" placeholder="Выбрать"/><br></tr>
+            <tr><textarea name="info" placeholder="Добавьте комментарий"></textarea></tr>
+            <tr><button type="submit" th:text="Загрузить">Добавить</button></tr>
+        </table>
+
+        <input type="hidden" th:attr="name=${_csrf.parameterName}, value=${_csrf.token}"/>
+    </form>
+</div>
 
 </body>
-
+</html>

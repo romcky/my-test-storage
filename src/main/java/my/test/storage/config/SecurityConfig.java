@@ -37,27 +37,46 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/public");
+        return (web) -> web.ignoring().requestMatchers("/styles/**");
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
-                .logout(Customizer.withDefaults())
-                .formLogin(Customizer.withDefaults())
+                //.logout(Customizer.withDefaults())
+                .formLogin(formLogin -> formLogin
+                        .usernameParameter("username")
+                        .passwordParameter("password")
+                        .loginPage("/"))
+                //        .loginProcessingUrl("/auth"))
+                //        .successForwardUrl("/")
+                //        .failureForwardUrl("/"))
+                .logout(logout -> logout
+                        .deleteCookies("remove")
+                        .invalidateHttpSession(false)
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/"))
                 .authorizeHttpRequests(managerRegistry -> managerRegistry
                         .requestMatchers("/admin").hasAuthority("ADMIN")
                         .requestMatchers("/users/**").hasAnyAuthority("ADMIN")
+
                         .requestMatchers("/files").authenticated()
                         .requestMatchers("/files/get/*").authenticated()
                         .requestMatchers("/files/add").hasAuthority("MANAGER")
+                        .requestMatchers("/files/delete/*").hasAuthority("MANAGER")
+
                         .requestMatchers("/manager").hasAuthority("MANAGER")
                         .requestMatchers("/").permitAll()
+              //          .requestMatchers("/auth").permitAll()
                         .anyRequest().authenticated())
+                    //    .requestMatchers("/auth").permitAll())
+
            .httpBasic(Customizer.withDefaults());
 
         return http.build();
     }
+
+
 
 }
