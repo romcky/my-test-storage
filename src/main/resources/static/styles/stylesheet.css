@@ -21,7 +21,17 @@ table {
     width: 100%;
 }
 
-.header {
+tr {
+    height: 30px;
+    white-space: nowrap;
+}
+
+td, th {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.headercolor {
     background-color: #808080;
 }
 
@@ -29,10 +39,16 @@ table {
     width: 50px
 }
 
-.odd-raw {
+.lightraw {
     background-color: #D3D3D3;
 }
 
-.even-raw {
+.darkraw {
     background-color: #B9B9B9;
 }
+
+
+.width100 {
+    width: 100%;
+}
+

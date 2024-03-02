@@ -2,12 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Управление файлами</title>
+    <title>Файлы</title>
     <link rel="stylesheet" th:href="@{styles/stylesheet.css}">
 </head>
 <body>
+
+<h2>Доступные файлы:</h2>
 <table>
-    <tr class="header">
+    <thead>
+    <tr class="headercolor">
         <th class="small-column">ID</th>
         <th>Файл</th>
         <th>Комментарий</th>
@@ -15,7 +18,8 @@
         <th class="small-column"></th>
         <th class="small-column" th:if="${manager}"></th>
     </tr>
-    <tr th:each="file : ${files}" th:class="${fileStat.odd} ? 'odd-raw' : 'even-raw'">
+    </thead>
+    <tr th:each="file : ${files}" th:class="${fileStat.odd} ? 'lightraw' : 'darkraw'">
         <td th:text="${file.id}">1</td>
         <td th:text="${file.name}">user</td>
         <td th:text="${file.info}">info</td>
@@ -33,16 +37,21 @@
     </tr>
 </table>
 
-<div th:if="${manager}">
-    <h2>Добавить файл</h2>
-    <form method="POST" enctype="multipart/form-data" action="/files/add">
-        <table>
-            <tr><input type="file" name="file" placeholder="Выбрать"/><br></tr>
-            <tr><textarea name="info" placeholder="Добавьте комментарий"></textarea></tr>
-            <tr><button type="submit" th:text="Загрузить">Добавить</button></tr>
-        </table>
+<br>
 
-        <input type="hidden" th:attr="name=${_csrf.parameterName}, value=${_csrf.token}"/>
+<div th:if="${manager}">
+    <h2>Добавить новый:</h2>
+    <form method="POST" enctype="multipart/form-data" th:action="@{/files/add}">
+    <table class="width100">
+        <tr class="headercolor">
+            <th><input type="file" name="file" class="width100"/></th>
+            <th class="small-column"> </th>
+        </tr>
+        <tr class="lightraw">
+            <td style="padding-right:10px"><input type="text" name="info" placeholder="Комментарий" class="width100"></td>
+            <td><button type="submit">Добавить</button></td>
+        </tr>
+    </table>
     </form>
 </div>
 

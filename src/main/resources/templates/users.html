@@ -2,27 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Управление пользователями</title>
+    <title>Пользователи</title>
     <link rel="stylesheet" th:href="@{styles/stylesheet.css}">
 </head>
 <body>
 
 <h2>Список пользователей:</h2>
 <table>
-    <tr>
-        <th>ID:</th>
-        <th>Логин:</th>
-        <th>Права:</th>
-        <th></th>
+    <thead>
+    <tr  class="headercolor">
+        <th class="small-column">ID</th>
+        <th>Логин</th>
+        <th>Права</th>
+        <th class="small-column"> </th>
     </tr>
-    <tr th:each="user : ${users}">
+    </thead>
+    <tr th:each="user : ${users}" th:class="${userStat.odd} ? 'lightraw' : 'darkraw'">
         <td th:text="${user.id}">1</td>
         <td th:text="${user.name}">user</td>
-        <td th:each="role : ${user.roles}">
-            <div th:text="${role.name} + ' '"></div>
-        </td>
+        <td th:each="role : ${user.roles}"><span th:text="${role.name} + ' '"></span></td>
         <td>
-            <form method="post" th:action="'/users/delete/' + ${user.id}">
+            <form method="post" th:action="@{/users/delete/} + ${user.id}">
             <button type="submit">delete</button>
             </form>
         </td>
@@ -30,16 +30,31 @@
 </table>
 
 <h2>Добавить пользователя:</h2>
-<form method="post" action="/users/add">
-    <label for="id-name">Логин:</label><br>
-    <input type="text" id="id-name" name="name"/><br>
-    <label for "id-pwd">Пароль:</label><br>
-    <input type="text" id="id-pwd" name="pwd"/><br>
-    <label for "id-role">Права:</label><br>
-    <input type="text" id="id-role" name="role"/><br>
-    <input type="hidden" th:attr="name=${_csrf.parameterName}, value=${_csrf.token}"/>
-    <button type="submit" th:text="Добавить">Добавить</button>
+<form method="post" th:action="@{/users/add}">
+    <table>
+        <tr class="lightraw">
+            <td class="small-column"><label for="id-name">Логин:</label></td>
+            <td><input type="text" id="id-name" name="name"/></td>
+            <td class="small-column"> </td>
+        </tr>
+        <tr class="darkraw">
+            <td><label for="id-pwd">Пароль:</label></td>
+            <td><input type="password" id="id-pwd" name="pwd"/></td>
+            <td> </td>
+        </tr>
+        <tr class="lightraw">
+            <td><label for="id-role">Права:</label></td>
+            <td><input type="text" id="id-role" name="role"/></td>
+            <td> </td>
+        </tr>
+
+        <tr class="darkraw">
+            <td> </td>
+            <td> </td>
+            <td><button type="submit">Добавить</button></td>
+        </tr>
+    </table>
 </form>
 
 </body>
-
+</html>

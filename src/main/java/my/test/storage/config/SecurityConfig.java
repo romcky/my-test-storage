@@ -59,7 +59,7 @@ public class SecurityConfig {
                         .logoutSuccessUrl("/"))
                 .authorizeHttpRequests(managerRegistry -> managerRegistry
                         .requestMatchers("/admin").hasAuthority("ADMIN")
-                        .requestMatchers("/users/**").hasAnyAuthority("ADMIN")
+                        .requestMatchers("/users/add").hasAuthority("ADMIN")
 
                         .requestMatchers("/files").authenticated()
                         .requestMatchers("/files/get/*").authenticated()
